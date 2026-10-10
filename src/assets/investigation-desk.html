@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Investigation Desk</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts for Vintage Investigation aesthetic -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&amp;family=Cinzel:wght@500;700;900&amp;family=Courier+Prime:ital,wght@0,400;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Core Layout & Desk Base Styles -->
+<style data-purpose="desk-surfaces">
+    :root {
+      --wood-dark: #120703;
+      --wood-mid: #25120a;
+      --wood-warm: #3d1b0e;
+      --spotlight-amber: rgba(255, 215, 145, 0.45);
+      --red-john: #7e1215;
+    }
+
+    body {
+      background-color: #080302;
+      overflow-x: hidden;
+      user-select: none;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    /* Polished Mahogany Table Surface with ambient woodgrain texture */
+    .desk-wood-surface {
+      background: 
+        radial-gradient(circle at 50% 0%, rgba(255, 214, 153, 0.35) 0%, rgba(130, 60, 25, 0.15) 35%, rgba(18, 7, 3, 0.95) 80%),
+        repeating-linear-gradient(90deg, #180905 0px, #2a130b 140px, #1a0a05 280px, #120603 420px);
+      box-shadow: inset 0 0 160px 40px rgba(0, 0, 0, 0.95);
+    }
+
+    /* Overhead Cinematic Brass Lamp Shade & Spotlight Cones */
+    .lamp-glow-cone {
+      background: radial-gradient(ellipse at 50% 0%, 
+        rgba(255, 238, 190, 0.85) 0%, 
+        rgba(255, 195, 115, 0.5) 22%, 
+        rgba(210, 110, 35, 0.18) 52%, 
+        transparent 75%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    /* Central Executive Leather Desk Blotter */
+    .blotter-pad {
+      background: 
+        radial-gradient(circle at 50% 15%, #18191b 0%, #0c0d0e 80%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 4px);
+      box-shadow: 
+        0 30px 60px -15px rgba(0, 0, 0, 0.9),
+        0 4px 12px rgba(0, 0, 0, 0.8),
+        inset 0 1px 1px rgba(255, 255, 255, 0.08),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Burgundy Leather Rails on Desk Pad Edges */
+    .leather-rail-left {
+      background: linear-gradient(90deg, #360a0f 0%, #4f1118 60%, #2f080c 100%);
+      box-shadow: inset -1px 0 2px rgba(0,0,0,0.6), inset 1px 0 2px rgba(255,255,255,0.1);
+      border-right: 1px dashed rgba(220, 160, 120, 0.35);
+    }
+    .leather-rail-right {
+      background: linear-gradient(90deg, #2f080c 0%, #4f1118 40%, #360a0f 100%);
+      box-shadow: inset 1px 0 2px rgba(0,0,0,0.6), inset -1px 0 2px rgba(255,255,255,0.1);
+      border-left: 1px dashed rgba(220, 160, 120, 0.35);
+    }
+  </style>
+<!-- Artifact Textures, Shadows and Distresses -->
+<style data-purpose="artifact-styling">
+    .paper-aged {
+      background: #dfcfab;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(139, 90, 43, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(110, 60, 20, 0.22) 0%, transparent 55%),
+        linear-gradient(135deg, rgba(255, 248, 220, 0.6) 0%, rgba(200, 175, 130, 0.7) 100%);
+      color: #2b1f14;
+    }
+
+    .polaroid-frame {
+      background: #eee8d5;
+      box-shadow: 
+        2px 8px 18px rgba(0, 0, 0, 0.75),
+        0 1px 3px rgba(0, 0, 0, 0.6);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+    .polaroid-frame:hover {
+      transform: translateY(-6px) scale(1.04) rotate(0deg) !important;
+      box-shadow: 4px 16px 28px rgba(0, 0, 0, 0.85);
+      z-index: 50 !important;
+    }
+
+    .playing-card {
+      background: #f7f2e4;
+      border: 1px solid #c9bda3;
+      box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.65);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .playing-card:hover {
+      transform: translateY(-8px) scale(1.06) rotate(0deg) !important;
+      box-shadow: 4px 14px 22px rgba(0, 0, 0, 0.85);
+      z-index: 45 !important;
+    }
+
+    .chess-piece {
+      filter: drop-shadow(4px 10px 8px rgba(0,0,0,0.85));
+      transition: transform 0.2s ease;
+    }
+    .chess-piece:hover {
+      transform: scale(1.08) translateY(-4px);
+    }
+
+    .red-john-symbol {
+      mix-blend-mode: multiply;
+      filter: drop-shadow(0 0 10px rgba(120, 10, 15, 0.45)) blur(0.35px);
+      opacity: 0.68;
+      transition: opacity 0.5s ease;
+    }
+    .red-john-symbol:hover {
+      opacity: 0.95;
+      filter: drop-shadow(0 0 14px rgba(180, 20, 25, 0.8));
+    }
+
+    /* Realistic string effect */
+    .forensic-string {
+      stroke: #c81d25;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.7));
+    }
+  </style>
+  <style data-purpose="responsive-investigation-desk">
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 0 !important;
+      padding: 0 !important;
+      overflow: hidden;
+    }
+
+    #mentalist-desk {
+      position: fixed;
+      inset: 0;
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 0 !important;
+      max-width: none;
+      aspect-ratio: auto;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .desk-canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: flex;
+      width: 1440px;
+      height: 810px;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1px solid #292018;
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      transform: translate(-50%, -50%) scale(var(--desk-scale, 1));
+      transform-origin: center;
+    }
+
+    .event-title-banner {
+      position: absolute;
+      z-index: 40;
+      top: 12px;
+      left: 50%;
+      display: flex;
+      width: 720px;
+      min-height: 112px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px 8px;
+      transform: translateX(-50%);
+      border: 1px solid rgba(91, 66, 42, 0.45);
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 255, 244, 0.58), transparent 70%),
+        linear-gradient(180deg, #eee5ce 0%, #dfd1b3 100%);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      color: #211710;
+      text-align: center;
+    }
+
+    .event-title-banner::before {
+      position: absolute;
+      top: -10px;
+      left: 28px;
+      width: 18px;
+      height: 18px;
+      border: 1px solid #681a1c;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 28%, #ff7268 0%, #c5232a 55%, #74171b 100%);
+      box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.55);
+      content: "";
+    }
+
+    .event-title-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #625847;
+      font-family: "Courier Prime", monospace;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .event-title-stamp {
+      padding: 3px 7px;
+      border: 2px dashed rgba(139, 38, 40, 0.75);
+      color: #8b2628;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+
+    .event-title-file {
+      white-space: nowrap;
+    }
+
+    .event-title-name {
+      margin: 2px 0 1px;
+      color: #17120e;
+      font-family: "Cinzel", "Playfair Display", Georgia, serif;
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: 9px;
+      line-height: 1.05;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+
+    .event-title-subtitle {
+      width: 100%;
+      margin: 0;
+      padding-top: 5px;
+      border-top: 1px solid rgba(90, 72, 48, 0.24);
+      color: #655b4a;
+      font-family: "Courier Prime", monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .event-title-subtitle strong {
+      color: #8b2628;
+      font-weight: 700;
+    }
+
+    [data-purpose="executive-desk-blotter-container"] {
+      height: 550px;
+      min-height: 0;
+    }
+
+    #desk-stage {
+      min-width: 0;
+      padding: 10px;
+    }
+
+    .leaderboard-card {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      overflow: hidden;
+      padding: 12px 20px 0;
+      border: 1px solid rgba(106, 80, 46, 0.55);
+      border-radius: 3px;
+      background:
+        radial-gradient(ellipse at 8% 5%, rgba(255, 248, 222, 0.72), transparent 38%),
+        repeating-linear-gradient(0deg, rgba(104, 75, 34, 0.025) 0 1px, transparent 1px 4px),
+        #e2d0a7;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.48), inset 0 0 0 3px rgba(255, 244, 211, 0.2);
+      color: #281d12;
+      font-family: "Courier Prime", monospace;
+    }
+
+    .standings-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(99, 75, 41, 0.25);
+    }
+
+    .standings-kicker {
+      margin: 0 0 2px;
+      color: #715b38;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+    }
+
+    .standings-title {
+      margin: 0;
+      color: #21170f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .standings-subtitle {
+      margin: 3px 0 0;
+      color: #6f5b3a;
+      font-family: "Space Grotesk", Arial, sans-serif;
+      font-size: 11px;
+    }
+
+    .standings-live {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border: 1px solid rgba(107, 78, 39, 0.3);
+      border-radius: 3px;
+      color: #5c472b;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .standings-live::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4a9b63;
+      box-shadow: 0 0 0 2px rgba(74, 155, 99, 0.16);
+      content: "";
+    }
+
+    .standings-table-wrap {
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-color: rgba(99, 75, 41, 0.55) transparent;
+      scrollbar-width: thin;
+    }
+
+    .standings-table-wrap::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .standings-table-wrap::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background: rgba(99, 75, 41, 0.45);
+    }
+
+    .standings-table {
+      width: 100%;
+      height: 100%;
+      border-collapse: separate;
+      border-spacing: 0 1px;
+      table-layout: fixed;
+      text-align: left;
+    }
+
+    .standings-table thead {
+      height: 25px;
+      border-bottom: 1px solid rgba(99, 75, 41, 0.35);
+    }
+
+    .standings-table th {
+      color: #715b38;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+
+    .standings-table th:first-child,
+    .standings-table td:first-child {
+      width: 16%;
+      padding-left: 6px;
+    }
+
+    .standings-table th:last-child,
+    .standings-table td:last-child {
+      width: 18%;
+      padding-right: 8px;
+      text-align: right;
+    }
+
+    .standings-table tbody tr {
+      height: auto;
+      box-shadow: inset 0 -1px rgba(99, 75, 41, 0.15);
+      transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .standings-table tbody tr:hover,
+    .standings-table tbody tr:focus-visible {
+      position: relative;
+      z-index: 1;
+      outline: none;
+      background: rgba(255, 248, 222, 0.62);
+      box-shadow: inset 3px 0 0 rgba(177, 139, 35, 0.72);
+      transform: translateX(2px);
+    }
+
+    .standings-table tbody tr:focus-visible {
+      box-shadow: inset 3px 0 0 #8b2628, 0 0 0 2px rgba(139, 38, 40, 0.38);
+    }
+
+    .standings-table tbody tr:last-child {
+      border-bottom: 0;
+    }
+
+    .standings-table td {
+      padding: 3px 0;
+      font-family: "Space Grotesk", Arial, sans-serif;
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .standings-table td:nth-child(2) {
+      padding-left: 8px;
+    }
+
+    .standing-rank {
+      display: inline-grid;
+      width: 20px;
+      height: 20px;
+      place-items: center;
+      border: 1px solid rgba(99, 75, 41, 0.28);
+      border-radius: 50%;
+      background: rgba(255, 248, 222, 0.46);
+      color: #594326;
+      font-family: "Courier Prime", monospace;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .standing-rank.gold {
+      border-color: #b18b23;
+      background: #e6c24f;
+      color: #38270d;
+    }
+
+    .standing-rank.silver {
+      border-color: #919797;
+      background: #c5c9c5;
+    }
+
+    .standing-rank.bronze {
+      border-color: #ad7044;
+      background: #ca8e5b;
+      color: #2e1a0e;
+    }
+
+    .standing-team {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow: hidden;
+      font-size: 700px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .standing-points {
+      color: #342417;
+      font-family: "Courier Prime", monospace !important;
+      font-size: 19px !important;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .standings-footer {
+      display: grid;
+      min-height: 27px;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      gap: 6px;
+      border-top: 1px solid rgba(99, 75, 41, 0.22);
+      color: #715b38;
+      font-size: 9px;
+    }
+
+    .standings-updated {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .standings-updated::before {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #4a9b63;
+      content: "";
+    }
+
+    .standings-count {
+      text-align: center;
+    }
+
+    .standings-season {
+      text-align: right;
+    }
+
+    [data-purpose="profiling-investigation-materials"] > .paper-aged:first-child {
+      width: calc(100% - 8px);
+      padding: 18px;
+    }
+
+    [data-purpose="profiling-investigation-materials"] > .paper-aged:nth-child(2) {
+      width: calc(100% - 24px);
+      padding: 14px;
+    }
+
+    [data-purpose="profiling-investigation-materials"] > .paper-aged p {
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    [data-purpose="profiling-investigation-materials"] > .paper-aged:nth-child(2) .flex.gap-2 > div:first-child {
+      width: 112px;
+      height: 128px;
+      flex: 0 0 auto;
+    }
+
+    [data-purpose="profiling-investigation-materials"] > .paper-aged:nth-child(2) .flex.gap-2 > div:last-child svg {
+      width: 64px;
+      height: 48px;
+    }
+
+    [data-purpose="profiling-investigation-materials"] > .flex.items-end.gap-2 > div {
+      width: 84px;
+      height: 84px;
+    }
+
+    [data-purpose="profiling-investigation-materials"] > .paper-aged:nth-child(2) > .flex.items-center > .flex-1 {
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    [data-purpose="lower-evidence-row"] [title="Handwritten Cryptic Letter"] > div:nth-child(2) {
+      font-size: 12px;
+      line-height: 1.1;
+    }
+
+    @media (max-aspect-ratio: 4 / 3) {
+      .desk-canvas {
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100dvh;
+        transform: none;
+      }
+
+      .event-title-banner {
+        top: 10px;
+        width: min(680px, calc(100% - 36px));
+        min-height: 0;
+        padding: 8px 10px 7px;
+      }
+
+      .event-title-banner::before {
+        top: -8px;
+        left: 18px;
+        width: 14px;
+        height: 14px;
+      }
+
+      .event-title-meta {
+        flex-wrap: wrap;
+        gap: 4px 8px;
+        font-size: clamp(7px, 2.2vw, 10px);
+        letter-spacing: 0.7px;
+      }
+
+      .event-title-stamp {
+        padding: 2px 4px;
+      }
+
+      .event-title-name {
+        margin-top: 2px;
+        font-size: clamp(26px, 8vw, 38px);
+        letter-spacing: clamp(4px, 1.5vw, 7px);
+      }
+
+      .event-title-subtitle {
+        padding-top: 5px;
+        font-size: clamp(6px, 1.9vw, 9px);
+        letter-spacing: 0.45px;
+      }
+
+      .desk-canvas > [data-purpose="profiling-investigation-materials"],
+      .desk-canvas > [data-purpose="forensic-crime-scene-evidence"],
+      .desk-canvas > [data-purpose="top-left-sleight-of-hand-artifacts"],
+      .desk-canvas > [data-purpose="bottom-chess-and-cards"] {
+        display: none !important;
+      }
+
+      [data-purpose="executive-desk-blotter-container"] {
+        width: calc(100% - 20px) !important;
+        height: min(66dvh, 620px) !important;
+        position: absolute !important;
+        top: 56%;
+        left: 50%;
+        margin: 0 !important;
+        transform: translate(-50%, -50%) !important;
+      }
+
+      .leather-rail-left,
+      .leather-rail-right {
+        width: 16px !important;
+        flex: 0 0 16px;
+      }
+
+      #desk-stage {
+        padding: 7px;
+      }
+
+      .leaderboard-card {
+        padding: 8px 8px 0;
+      }
+
+      .standings-header {
+        padding-bottom: 5px;
+      }
+
+      .standings-kicker {
+        font-size: clamp(6px, 1.7vw, 9px);
+        letter-spacing: 0.8px;
+      }
+
+      .standings-title {
+        font-size: clamp(14px, 3.5vw, 23px);
+      }
+
+      .standings-subtitle {
+        font-size: clamp(8px, 2vw, 11px);
+      }
+
+      .standings-live {
+        padding: 4px 5px;
+        font-size: clamp(5px, 1.25vw, 8px);
+      }
+
+      .standings-table thead {
+        height: 20px;
+      }
+
+      .standings-table th {
+        font-size: clamp(6px, 1.5vw, 9px);
+      }
+
+      .standings-table th:first-child,
+      .standings-table td:first-child {
+        width: 17%;
+        padding-left: 2px;
+      }
+
+      .standings-table th:last-child,
+      .standings-table td:last-child {
+        width: 17%;
+        padding-right: 3px;
+      }
+
+      .standings-table tbody tr {
+        height: auto;
+      }
+
+      .standings-table {
+        border-spacing: 0 1px;
+      }
+
+      .standings-table td {
+        padding: 3px 0;
+      }
+
+      .standings-table td:nth-child(2) {
+        padding-left: 4px;
+      }
+
+      .standings-table td,
+      .standing-points {
+        font-size: clamp(8.5px, 2vw, 13px) !important;
+      }
+
+      .standing-rank {
+        width: clamp(13px, 3vw, 18px);
+        height: clamp(13px, 3vw, 18px);
+        font-size: clamp(8px, 1.8vw, 11px);
+      }
+
+      .standings-footer {
+        min-height: 21px;
+        gap: 3px;
+        font-size: clamp(6px, 1.45vw, 9px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .standings-table tbody tr {
+        transition: none;
+      }
+    }
+
+    @media (max-height: 520px) and (min-aspect-ratio: 4 / 3) {
+      [data-purpose="executive-desk-blotter-container"] {
+        height: 520px;
+      }
+
+      .event-title-banner {
+        top: 4px;
+        min-height: 96px;
+        padding-top: 6px;
+        padding-bottom: 5px;
+      }
+
+      .event-title-name {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-amber-100 flex items-center justify-center p-2 md:p-6 lg:p-10 bg-black selection:bg-red-950 selection:text-white">
+<!-- BEGIN: MasterDeskWorkspace -->
+<main class="relative w-full max-w-[1440px] aspect-[16/9] min-h-[720px] rounded-2xl overflow-hidden desk-wood-surface border border-stone-800 shadow-2xl flex flex-col justify-between" id="mentalist-desk">
+<div class="desk-canvas" id="desk-canvas">
+<header class="event-title-banner" aria-label="Nexus 2.0 event heading">
+  <div class="event-title-meta">
+    <span class="event-title-stamp">DJS Consulting Group</span>
+    <span class="event-title-file">File No. BGS-2026-NEXUS</span>
+  </div>
+  <h1 class="event-title-name">NEXUS 2.0</h1>
+  <p class="event-title-subtitle">
+    Case File Archive // Strategic Consulting Leaderboard
+    <span aria-hidden="true"> · </span>
+    <strong>Forensic Merit Division</strong>
+  </p>
+</header>
+<!-- BEGIN: OverheadLampSpotlight -->
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-80 h-32 flex flex-col items-center pointer-events-none z-30" data-purpose="overhead-lamp-fixture">
+<!-- Vintage brass lamp rim -->
+<div class="w-48 h-12 rounded-full bg-gradient-to-b from-[#6b471c] via-[#d4af37] to-[#3a2208] shadow-[0_12px_35px_rgba(255,200,100,0.65)] border-b-2 border-amber-300"></div>
+<!-- Blinding radial downward beam -->
+<div class="absolute top-6 w-[860px] h-[720px] -translate-x-1/2 left-1/2 lamp-glow-cone rounded-full blur-2xl"></div>
+</div>
+<!-- END: OverheadLampSpotlight -->
+<!-- BEGIN: RedJohnInsigniaWall -->
+<!-- Faint bloody smiley insignia on dark wood wall in top right corner -->
+<div class="absolute top-4 right-8 w-36 h-36 z-10 pointer-events-auto cursor-pointer" data-purpose="red-john-mark" title="Insignia of Red John">
+<svg class="w-full h-full red-john-symbol" viewbox="0 0 100 100">
+<!-- Bloody hand-drawn circle -->
+<path d="M 50,8 C 74,7 93,26 92,51 C 91,76 72,94 48,93 C 24,92 7,72 8,48 C 9,23 27,9 50,8 Z" fill="none" stroke="#7e1215" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.2"></path>
+<!-- Eye Left -->
+<circle cx="35" cy="40" fill="#720f12" r="4.2"></circle>
+<path d="M 35,44 Q 35,56 36,58" fill="none" opacity="0.8" stroke="#720f12" stroke-linecap="round" stroke-width="2.2"></path>
+<!-- Eye Right -->
+<circle cx="65" cy="40" fill="#720f12" r="4.2"></circle>
+<path d="M 65,44 Q 65,58 64,62" fill="none" opacity="0.8" stroke="#720f12" stroke-linecap="round" stroke-width="2.2"></path>
+<!-- Gruesome curved bloody smile with drip -->
+<path d="M 28,63 Q 50,84 72,63" fill="none" stroke="#7e1215" stroke-linecap="round" stroke-width="5"></path>
+<!-- Drips running down wood grain -->
+<path d="M 50,73 Q 50.5,86 50,91" opacity="0.8" stroke="#7e1215" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<!-- END: RedJohnInsigniaWall -->
+<!-- BEGIN: TopLeftCornerCardsAndChess -->
+<!-- Antique playing cards fan & fallen black king/pawn -->
+<div class="absolute top-5 left-6 z-20 flex items-start gap-4" data-purpose="top-left-sleight-of-hand-artifacts">
+<!-- Cards Fan -->
+<div class="relative w-36 h-40">
+<!-- Card 1: Ace of Hearts -->
+<div class="absolute left-0 top-2 w-20 h-28 rounded playing-card p-1 transform -rotate-12">
+<div class="text-xs font-bold text-red-700 font-serif leading-none">A♥️</div>
+<div class="w-full h-16 flex items-center justify-center text-red-700 text-2xl">♥️</div>
+</div>
+<!-- Card 2: King of Clubs -->
+<div class="absolute left-6 top-0 w-20 h-28 rounded playing-card p-1 transform rotate-6 border-stone-300">
+<div class="text-xs font-bold text-stone-900 font-serif leading-none">K♣️</div>
+<div class="text-[9px] text-center text-stone-600 mt-1 uppercase font-serif tracking-tighter">Court Illusion</div>
+<div class="w-full h-12 flex items-center justify-center text-stone-800 text-xl">♣️</div>
+</div>
+<!-- Card 3: Queen of Spades -->
+<div class="absolute left-14 top-4 w-20 h-28 rounded playing-card p-1 transform rotate-24">
+<div class="text-xs font-bold text-stone-900 font-serif leading-none">Q♠️</div>
+<div class="w-full h-16 flex items-center justify-center text-stone-900 text-2xl">♠️</div>
+</div>
+</div>
+<!-- Wooden Chess: Upright Pawn and Fallen Black King -->
+<div class="relative w-32 h-24 mt-2 flex items-center">
+<!-- Upright White Pawn (Boxwood) -->
+<div class="chess-piece cursor-pointer" title="Boxwood Pawn">
+<svg height="48" viewbox="0 0 34 48" width="34">
+<ellipse cx="17" cy="11" fill="url(#boxwood-grad)" rx="8" ry="8" stroke="#4a3118" stroke-width="1"></ellipse>
+<path d="M12,18 C13,24 10,29 8,39 L26,39 C24,29 21,24 22,18 Z" fill="url(#boxwood-grad)" stroke="#4a3118" stroke-width="1"></path>
+<path d="M5,39 C5,39 4,45 17,45 C30,45 29,39 29,39 Z" fill="url(#boxwood-grad)" stroke="#3f2710" stroke-width="1.2"></path>
+<defs>
+<lineargradient id="boxwood-grad" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#eed8ae"></stop>
+<stop offset="45%" stop-color="#fff1d4"></stop>
+<stop offset="100%" stop-color="#b8935c"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<!-- Fallen Dark Stained King Piece -->
+<div class="chess-piece cursor-pointer -rotate-75 translate-x-3 translate-y-4" title="Fallen Dark King">
+<svg height="64" viewbox="0 0 42 64" width="42">
+<!-- Cross -->
+<path d="M20,2 L22,2 L22,8 L20,8 Z M17,4 L25,4 L25,6 L17,6 Z" fill="#d5aa6e"></path>
+<!-- Finial & Crown -->
+<path d="M15,9 C15,9 21,7 27,9 C28,15 30,17 31,21 L11,21 C12,17 14,15 15,9 Z" fill="url(#darkwood-grad)" stroke="#1a0b06" stroke-width="1"></path>
+<!-- Body Profile -->
+<path d="M14,21 C16,30 11,42 9,54 L33,54 C31,42 26,30 28,21 Z" fill="url(#darkwood-grad)" stroke="#1a0b06" stroke-width="1"></path>
+<rect fill="url(#darkwood-grad)" height="7" rx="2" stroke="#120703" stroke-width="1" width="30" x="6" y="54"></rect>
+<defs>
+<lineargradient id="darkwood-grad" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#2a140d"></stop>
+<stop offset="50%" stop-color="#552c1a"></stop>
+<stop offset="100%" stop-color="#190904"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+<!-- END: TopLeftCornerCardsAndChess -->
+<!-- BEGIN: LeftPerimeterCaseFilesAndDiagrams -->
+<div class="absolute left-3 top-28 bottom-6 w-72 flex flex-col justify-between pointer-events-auto z-20" data-purpose="profiling-investigation-materials">
+<!-- Manila Case File Folder with CBI Behavioral Profiling -->
+<div class="relative w-68 paper-aged rounded-r-lg p-3 shadow-2xl border-l-4 border-amber-900 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+<!-- File Header Tab -->
+<div class="flex items-center justify-between border-b border-stone-500/40 pb-1.5 mb-2">
+<span class="text-[11px] uppercase tracking-widest font-black text-red-900">Case File Note</span>
+<div class="text-[8px] border border-stone-500 px-1 font-mono text-stone-700">EXH: 07-B</div>
+</div>
+<div class="text-[12px] font-bold text-stone-900 tracking-tight font-serif">Behavioral Profiling:</div>
+<p class="text-[9.5px] text-stone-800 leading-tight mt-1 font-mono italic opacity-95">
+          "Subject communicates high behavioral narcissism, deceptive cues in micro-tremors, pre-selected choices masked as spontaneous free will. Noticeable fixation on control..."
+        </p>
+<!-- Subtle CBI Official Stamp -->
+<div class="mt-2 inline-block border-2 border-red-800 text-red-800 text-[8px] font-mono px-1 py-0.5 font-bold uppercase tracking-wider rotate-[-6deg] opacity-75">
+          CBI CONSULTANT OBSERVATION
+        </div>
+</div>
+<!-- Sepia Sketch: Patrick Jane Male Profile & Cranial Diagram -->
+<div class="relative w-60 paper-aged p-2.5 rounded shadow-xl border border-stone-400 transform rotate-1 hover:rotate-0 transition-transform">
+<div class="flex items-center justify-between text-[9px] font-mono uppercase text-stone-700 border-b border-stone-400 pb-1">
+<span>Psychological Sketch</span>
+<span>Fig. 14</span>
+</div>
+<div class="flex gap-2 mt-2 items-center">
+<!-- Hand-drawn face illustration (Mentalist Jane likeness in line art) -->
+<div class="w-24 h-28 bg-[#ede2c8] rounded border border-stone-400 p-1 flex items-center justify-center">
+<svg class="w-full h-full opacity-85" viewbox="0 0 100 120">
+<!-- Head contour -->
+<path d="M50,15 C33,15 25,28 25,48 C25,72 35,92 50,95 C65,92 75,72 75,48 C75,28 67,15 50,15 Z" fill="none" stroke="#3d2a1b" stroke-width="1.6"></path>
+<!-- Curly wavy hair locks -->
+<path d="M24,42 C20,30 26,18 36,12 C44,7 58,8 65,13 C74,18 78,28 76,40 C72,25 64,18 50,18 C36,18 28,26 24,42 Z" fill="#4d3522" opacity="0.65"></path>
+<path d="M28,24 Q38,14 54,20 Q68,14 74,28" fill="none" stroke="#3d2a1b" stroke-width="1.4"></path>
+<!-- Eyebrows -->
+<path d="M32,40 Q40,36 46,40" fill="none" stroke="#3d2a1b" stroke-width="1.8"></path>
+<path d="M54,40 Q60,36 68,40" fill="none" stroke="#3d2a1b" stroke-width="1.8"></path>
+<!-- Eyes with perceptive gaze -->
+<ellipse cx="39" cy="45" fill="#2d1c10" rx="4" ry="2.2"></ellipse>
+<ellipse cx="61" cy="45" fill="#2d1c10" rx="4" ry="2.2"></ellipse>
+<!-- Nose line -->
+<path d="M49,44 L48,58 L54,60" fill="none" stroke="#3d2a1b" stroke-width="1.3"></path>
+<!-- Subtle knowing smile -->
+<path d="M38,72 Q50,77 62,71" fill="none" stroke="#3d2a1b" stroke-width="1.8"></path>
+<!-- Cheekbones and chin hatching -->
+<path d="M45,80 Q50,83 55,80" fill="none" stroke="#3d2a1b" stroke-width="1"></path>
+<line opacity="0.5" stroke="#5d422f" stroke-width="0.8" x1="30" x2="35" y1="58" y2="62"></line>
+<line opacity="0.5" stroke="#5d422f" stroke-width="0.8" x1="70" x2="65" y1="58" y2="62"></line>
+</svg>
+</div>
+<!-- Anatomical / Optical cranial diagrams -->
+<div class="flex-1 space-y-1.5 text-[8.5px] font-mono text-stone-800">
+<div class="font-bold text-stone-900 uppercase">Perceptual Cortex</div>
+<div class="text-[7.5px] leading-tight text-stone-700">Rapid sensory assimilation, pupil dilation reflex, cold reading response mapping.</div>
+<!-- Small cranial vector diagram -->
+<svg class="w-12 h-8 stroke-stone-700 fill-none opacity-70" viewbox="0 0 50 35">
+<circle cx="20" cy="18" r="14" stroke-width="1"></circle>
+<path d="M10,18 H32 M20,6 V28" stroke-dasharray="1,2" stroke-width="0.8"></path>
+<circle cx="34" cy="18" fill="#884433" r="3" stroke="none"></circle>
+</svg>
+</div>
+</div>
+</div>
+<!-- Optical Illusion Vortex Patterns & Card Corner -->
+<div class="flex items-end gap-2 -mb-2">
+<!-- Illusion Disc 1 (Square Hypnotic Spiral) -->
+<div class="w-16 h-16 bg-white border border-stone-800 shadow-lg p-0.5 transform -rotate-6 hover:rotate-45 transition-transform duration-700 cursor-pointer" title="Optical Illusion Stimulus">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<rect fill="#0c0c0c" height="100" width="100"></rect>
+<polygon fill="#f5f5f5" points="10,10 90,10 90,90 10,90"></polygon>
+<polygon fill="#0c0c0c" points="18,18 82,18 82,82 18,82"></polygon>
+<polygon fill="#f5f5f5" points="25,25 75,25 75,75 25,75"></polygon>
+<polygon fill="#0c0c0c" points="32,32 68,32 68,68 32,68"></polygon>
+<polygon fill="#f5f5f5" points="38,38 62,38 62,62 38,62"></polygon>
+<polygon fill="#0c0c0c" points="44,44 56,44 56,56 44,56"></polygon>
+</svg>
+</div>
+<!-- Illusion Disc 2 (Concentric Tunnel) -->
+<div class="w-16 h-16 bg-white border border-stone-800 shadow-lg p-0.5 transform rotate-6 hover:rotate-180 transition-transform duration-700 cursor-pointer" title="Perceptual Tunnel Pattern">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="#111" r="48"></circle>
+<circle cx="50" cy="50" fill="#eee" r="41"></circle>
+<circle cx="50" cy="50" fill="#111" r="34"></circle>
+<circle cx="50" cy="50" fill="#eee" r="27"></circle>
+<circle cx="50" cy="50" fill="#111" r="20"></circle>
+<circle cx="50" cy="50" fill="#eee" r="14"></circle>
+<circle cx="50" cy="50" fill="#111" r="8"></circle>
+</svg>
+</div>
+</div>
+</div>
+<!-- END: LeftPerimeterCaseFilesAndDiagrams -->
+<!-- BEGIN: BottomLeftPerimeterChessAndCards -->
+<!-- Fallen Knight, Pawn, and Six of Diamonds in bottom left area -->
+<div class="absolute bottom-4 left-64 z-20 flex items-center gap-5" data-purpose="bottom-chess-and-cards">
+<!-- Fallen Boxwood Knight -->
+<div class="chess-piece cursor-pointer transform rotate-80 translate-y-2" title="Fallen Knight">
+<svg height="52" viewbox="0 0 40 52" width="40">
+<path d="M10,48 L32,48 C30,42 30,36 30,30 C30,22 28,14 24,9 C20,3 12,4 10,12 C9,17 12,21 10,25 C8,28 3,30 4,36 C5,41 7,46 10,48 Z" fill="url(#boxwood-knight)" stroke="#4a3118" stroke-width="1.2"></path>
+<circle cx="14" cy="14" fill="#2d1706" r="1.6"></circle>
+<path d="M12,22 C16,22 20,24 22,28" fill="none" stroke="#4a3118" stroke-width="1"></path>
+<defs>
+<lineargradient id="boxwood-knight" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#fff0d0"></stop>
+<stop offset="50%" stop-color="#ddba82"></stop>
+<stop offset="100%" stop-color="#9d733b"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<!-- Tumbled King Base -->
+<div class="chess-piece cursor-pointer transform -rotate-45" title="Overturned Boxwood Pawn">
+<svg height="42" viewbox="0 0 28 42" width="28">
+<circle cx="14" cy="9" fill="url(#boxwood-grad)" r="7" stroke="#4a3118" stroke-width="1"></circle>
+<path d="M10,16 C11,21 9,26 6,34 L22,34 C19,26 17,21 18,16 Z" fill="url(#boxwood-grad)" stroke="#4a3118" stroke-width="1"></path>
+<rect fill="url(#boxwood-grad)" height="4" rx="1.5" stroke="#3f2710" stroke-width="1" width="20" x="4" y="34"></rect>
+</svg>
+</div>
+<!-- Playing Card: Six of Diamonds -->
+<div class="w-16 h-24 rounded playing-card p-1 transform rotate-12 -translate-y-3 cursor-pointer" title="Six of Diamonds">
+<div class="text-[10px] font-bold text-red-600 font-serif leading-none">6♦️</div>
+<div class="grid grid-cols-2 gap-1 px-1 py-1 text-center text-red-600 text-xs">
+<span>♦️</span><span>♦️</span>
+<span>♦️</span><span>♦️</span>
+<span>♦️</span><span>♦️</span>
+</div>
+</div>
+</div>
+<!-- END: BottomLeftPerimeterChessAndCards -->
+<!-- BEGIN: CentralBlotterWorkArea -->
+<!-- Central dark executive desk pad -->
+<div class="relative mx-auto my-auto w-full max-w-[820px] h-[550px] rounded-xl flex shadow-2xl z-10 border border-stone-800/80" data-purpose="executive-desk-blotter-container">
+<!-- Left Burgundy Leather Border with Gold Stitching -->
+<div class="w-12 h-full rounded-l-xl leather-rail-left flex flex-col items-center justify-between py-6">
+<div class="w-1 h-3 rounded bg-amber-400/30"></div>
+<div class="w-0.5 h-12 bg-amber-200/20"></div>
+<div class="w-1 h-3 rounded bg-amber-400/30"></div>
+</div>
+<!-- Central leaderboard replacing the investigation-desk message -->
+<div class="flex-1 h-full blotter-pad relative p-3" id="desk-stage">
+<section class="leaderboard-card" aria-labelledby="standings-title">
+  <header class="standings-header">
+    <div>
+      <p class="standings-kicker">SEASON 04 · TEAM STANDINGS</p>
+      <h2 class="standings-title" id="standings-title">BEST TEAM LEADERBOARD</h2>
+      <p class="standings-subtitle">The top teams, ranked by points earned this season.</p>
+    </div>
+    <span class="standings-live">SEASON IN PROGRESS</span>
+  </header>
+
+  <div class="standings-table-wrap">
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th scope="col">SERIAL NO.</th>
+          <th scope="col">TEAM NAME</th>
+          <th scope="col">POINTS <span aria-hidden="true">↓</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tabindex="0"><td><span class="standing-rank gold">1</span></td><td class="standing-team">Golden Falcons</td><td class="standing-points">980</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank silver">2</span></td><td class="standing-team">Crimson Comets</td><td class="standing-points">945</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank bronze">3</span></td><td class="standing-team">Silver Wolves</td><td class="standing-points">910</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">4</span></td><td class="standing-team">Emerald Eagles</td><td class="standing-points">875</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">5</span></td><td class="standing-team">Midnight Mavericks</td><td class="standing-points">840</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">6</span></td><td class="standing-team">Copper Cobras</td><td class="standing-points">805</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">7</span></td><td class="standing-team">Royal Raiders</td><td class="standing-points">770</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">8</span></td><td class="standing-team">Storm Breakers</td><td class="standing-points">735</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">9</span></td><td class="standing-team">Iron Titans</td><td class="standing-points">700</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">10</span></td><td class="standing-team">Neon Knights</td><td class="standing-points">665</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">11</span></td><td class="standing-team">Amber Arrows</td><td class="standing-points">630</td></tr>
+        <tr tabindex="0"><td><span class="standing-rank">12</span></td><td class="standing-team">Frost Giants</td><td class="standing-points">595</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="standings-footer">
+    <span class="standings-updated">Rankings updated just now</span>
+    <span class="standings-count">Showing 1–12 of 12 teams</span>
+    <span class="standings-season">TOP 15 · SEASON 04</span>
+  </footer>
+</section>
+</div>
+<!-- Right Burgundy Leather Border with Gold Stitching -->
+<div class="w-12 h-full rounded-r-xl leather-rail-right flex flex-col items-center justify-between py-6">
+<div class="w-1 h-3 rounded bg-amber-400/30"></div>
+<div class="w-0.5 h-12 bg-amber-200/20"></div>
+<div class="w-1 h-3 rounded bg-amber-400/30"></div>
+</div>
+</div>
+<!-- END: CentralBlotterWorkArea -->
+<!-- BEGIN: RightPerimeterCrimeSceneEvidenceBoard -->
+<div class="absolute right-3 top-16 bottom-4 w-72 pointer-events-auto z-20 flex flex-col justify-between items-end" data-purpose="forensic-crime-scene-evidence">
+<!-- Pinned Newspaper & Triangulated Forensic Polaroids with Red Forensic String -->
+<div class="relative w-72 h-[360px]">
+<!-- Background Torn Newspaper Article -->
+<div class="absolute -top-3 right-2 w-64 p-3 bg-[#d8ccae] rounded shadow-lg border border-stone-400 transform rotate-3 select-none">
+<div class="text-[13px] font-black uppercase tracking-tight text-black border-b border-stone-700 font-serif leading-none pb-0.5">
+            CRIME SCENE POLICE
+          </div>
+<div class="text-[9px] uppercase font-bold text-stone-800 mt-1">Written forensic information clippings</div>
+<p class="text-[8px] text-stone-700 font-serif leading-tight mt-1 line-clamp-3">
+            Sacramento detectives cordoned off the residency late Thursday evening after anonymous coordinates led authorities to undisclosed artifacts...
+          </p>
+</div>
+<!-- SVG Vector Forensic Red String connecting Polaroids -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-30" viewbox="0 0 288 320">
+<!-- Pushpin 1 (Top Left) to Pushpin 2 (Top Right) -->
+<line class="forensic-string" x1="52" x2="238" y1="92" y2="78"></line>
+<!-- Pushpin 2 to Pushpin 3 (Center Bottom) -->
+<line class="forensic-string" x1="238" x2="148" y1="78" y2="242"></line>
+<!-- Pushpin 3 back to Pushpin 1 forming tension triangle -->
+<line class="forensic-string" x1="148" x2="52" y1="242" y2="92"></line>
+<!-- Golden Pushpin Heads with drop shadow -->
+<circle cx="52" cy="92" fill="#e63946" r="4.5" stroke="#220205" stroke-width="1.2"></circle>
+<circle cx="238" cy="78" fill="#e63946" r="4.5" stroke="#220205" stroke-width="1.2"></circle>
+<circle cx="148" cy="242" fill="#e63946" r="4.5" stroke="#220205" stroke-width="1.2"></circle>
+</svg>
+<!-- Polaroid 1 (Top-Left): Pinned Crime Scene Origami / Clue -->
+<div class="absolute top-10 left-2 w-36 polaroid-frame p-2 pb-5 transform -rotate-8 cursor-pointer z-20" title="Evidence Photo: Origami Swan">
+<div class="w-full h-24 bg-stone-900 overflow-hidden flex items-center justify-center border border-stone-700">
+<!-- Macro Origami Swan Drawing in grayscale -->
+<svg class="w-18 h-18" viewbox="0 0 60 60">
+<polygon fill="#aaa" opacity="0.9" points="10,40 30,10 45,35 25,48"></polygon>
+<polygon fill="#fff" opacity="0.9" points="30,10 42,22 55,20 42,32"></polygon>
+<polygon fill="#666" opacity="0.8" points="10,40 25,48 40,46 50,42"></polygon>
+</svg>
+</div>
+<div class="text-[9px] font-mono text-stone-800 font-bold mt-1 tracking-tight text-center">EVID: 01-A SWAN</div>
+</div>
+<!-- Polaroid 2 (Top-Right): Crime Scene Room Angle -->
+<div class="absolute top-8 right-1 w-36 polaroid-frame p-2 pb-5 transform rotate-6 cursor-pointer z-20" title="Evidence Photo: Chamber Corridor">
+<div class="w-full h-24 bg-stone-950 overflow-hidden flex items-center justify-center border border-stone-700">
+<!-- Crime scene room perspective lines -->
+<svg class="w-full h-full stroke-stone-500 fill-none opacity-80" viewbox="0 0 60 60">
+<rect height="50" stroke-width="1" width="50" x="5" y="5"></rect>
+<line stroke-width="1" x1="5" x2="22" y1="5" y2="22"></line>
+<line stroke-width="1" x1="55" x2="38" y1="5" y2="22"></line>
+<line stroke-width="1" x1="5" x2="22" y1="55" y2="38"></line>
+<line stroke-width="1" x1="55" x2="38" y1="55" y2="38"></line>
+<rect height="16" stroke="#c81d25" stroke-width="1.2" width="16" x="22" y="22"></rect>
+</svg>
+</div>
+<div class="text-[9px] font-mono text-stone-800 font-bold mt-1 tracking-tight text-center">LOC: NORTH FOYER</div>
+</div>
+<!-- Polaroid 3 (Bottom-Center): Forensic Detail -->
+<div class="absolute bottom-4 left-20 w-40 polaroid-frame p-2.5 pb-6 transform rotate-2 cursor-pointer z-20" title="Evidence Photo: Smudge &amp; Entry Mark">
+<div class="w-full h-24 bg-stone-900 overflow-hidden flex items-center justify-center border border-stone-700">
+<svg class="w-20 h-16" viewbox="0 0 60 50">
+<path d="M10,25 Q30,10 50,25 T20,40" fill="none" stroke="#777" stroke-width="2"></path>
+<circle cx="32" cy="24" fill="#7e1215" opacity="0.8" r="5"></circle>
+</svg>
+</div>
+<div class="text-[9px] font-mono text-stone-800 font-bold mt-1 text-center">LATENT RESIDUE #09</div>
+</div>
+</div>
+<!-- Lower Evidence Tray: Hand-written Letter, Magnifying Glass, Latent Fingerprint, Dusting Tape -->
+<div class="relative w-full flex items-end justify-between" data-purpose="lower-evidence-row">
+<!-- Fingerprint Dusting Tape Roll -->
+<div class="relative w-[72px] h-[72px] rounded-full border-4 border-stone-300 bg-stone-900 shadow-xl flex items-center justify-center transform -rotate-12 cursor-pointer" title="Fingerprint Lift Tape">
+<div class="w-10 h-10 rounded-full border-2 border-dashed border-stone-500 bg-stone-800"></div>
+<!-- Adhesive flap peeling off -->
+<div class="absolute -right-3 -top-2 w-6 h-5 bg-stone-200/50 rounded-sm transform rotate-45 border border-stone-400"></div>
+</div>
+<!-- Brass & Polished Mahogany Magnifying Glass -->
+<div class="relative w-[84px] h-36 transform rotate-45 -translate-y-4 -translate-x-3 z-30 cursor-pointer group" title="Inspect with Magnifying Glass">
+<!-- Lens Rim -->
+<div class="w-20 h-20 rounded-full border-4 border-[#cda250] bg-white/10 backdrop-blur-[1.5px] shadow-[0_8px_20px_rgba(0,0,0,0.85)] flex items-center justify-center group-hover:scale-110 transition-transform">
+<!-- Glass Specular Highlight -->
+<div class="w-16 h-16 rounded-full border-t-2 border-l-2 border-white/50 -rotate-45"></div>
+</div>
+<!-- Brass Ferrule and Wood Handle -->
+<div class="w-3 h-4 bg-[#b88c32] mx-auto -mt-0.5 rounded-sm"></div>
+<div class="w-3.5 h-16 bg-gradient-to-r from-[#210c05] via-[#4d2410] to-[#1a0803] mx-auto rounded-b-md shadow-md border-t border-[#7a481c]"></div>
+</div>
+<!-- Latent Fingerprint Lift Card & Handwritten Letter -->
+<div class="relative flex flex-col items-end">
+<!-- Latent Fingerprint Index Card -->
+<div class="w-[92px] h-[112px] paper-aged p-2 rounded shadow-lg border border-stone-400 transform -rotate-6 mb-[-18px] mr-6 z-10 cursor-pointer" title="Forensic Latent Fingerprint">
+<div class="text-[6.5px] font-mono text-stone-800 uppercase tracking-tight border-b border-stone-400">Fingerprint #38</div>
+<!-- Realistic Latent Fingerprint Ridge Pattern in SVG -->
+<div class="w-full h-18 flex items-center justify-center py-1">
+<svg class="w-14 h-16 stroke-stone-900 fill-none opacity-90 stroke-[1.1]" viewbox="0 0 50 60">
+<path d="M25,12 C21,12 18,15 18,19 C18,24 22,27 25,27 C28,27 32,24 32,19 C32,15 29,12 25,12 Z"></path>
+<path d="M25,6 C17,6 12,11 12,19 C12,28 18,33 25,33 C32,33 38,28 38,19 C38,11 33,6 25,6 Z"></path>
+<path d="M25,1 C13,1 7,8 7,19 C7,33 14,40 25,40 C36,40 43,33 43,19 C43,8 37,1 25,1 Z"></path>
+<path d="M3,20 C3,37 11,47 25,47 C39,47 47,37 47,20"></path>
+<path d="M2,30 C3,43 12,54 25,54 C38,54 47,43 48,30"></path>
+</svg>
+</div>
+</div>
+<!-- Vintage Handwritten Letter ("Dear...") -->
+<div class="w-[136px] h-[208px] paper-aged p-3.5 rounded shadow-2xl border border-stone-400 transform rotate-3 z-10 cursor-pointer hover:rotate-0 transition-transform" title="Handwritten Cryptic Letter">
+<div class="font-['Caveat'] text-[17px] font-bold text-stone-900 leading-none">Dear Patrick,</div>
+<div class="font-['Caveat'] text-[12px] text-stone-800 leading-tight mt-1 space-y-0.5">
+<p>I have observed and that what the human mind does in distress is quite predictable.</p>
+<p>The rules of the game remain strictly mine. Do not look too closely at what you think you understand...</p>
+</div>
+<div class="mt-2 text-right font-['Caveat'] text-[14px] font-bold text-stone-900">
+              - An Old Friend
+            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- END: RightPerimeterCrimeSceneEvidenceBoard -->
+</div>
+</main>
+<!-- END: MasterDeskWorkspace -->
+<script data-purpose="responsive-desk-scaling">
+    const deskCanvas = document.getElementById('desk-canvas');
+    const portraitLayout = window.matchMedia('(max-aspect-ratio: 4/3)');
+
+    function fitDeskToViewport() {
+      document.body.classList.toggle('portrait-layout', portraitLayout.matches);
+      const scale = Math.min(
+        window.innerWidth / 1440,
+        window.innerHeight / 810,
+        1,
+      );
+      deskCanvas.style.setProperty('--desk-scale', scale);
+    }
+
+    window.addEventListener('resize', fitDeskToViewport);
+    portraitLayout.addEventListener('change', fitDeskToViewport);
+    fitDeskToViewport();
+  </script>
+</body></html>
