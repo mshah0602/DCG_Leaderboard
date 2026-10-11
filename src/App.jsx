@@ -61,6 +61,8 @@ function App() {
   const [srcDoc, setSrcDoc] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const iframeRef = useRef(null);
+  const scorePriorities = useRef(new Map());
+  const nextScorePriority = useRef(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -139,6 +141,23 @@ function App() {
           showError("No teams were found in the participants table.");
           return;
         }
+
+        const currentScorePriorities = new Map();
+        standings.forEach(({ teamName, score }) => {
+          const previous = scorePriorities.current.get(teamName);
+          const priority =
+            previous && previous.score === score
+              ? previous.priority
+              : nextScorePriority.current++;
+          currentScorePriorities.set(teamName, { score, priority });
+        });
+        standings.sort(
+          (first, second) =>
+            second.score - first.score ||
+            currentScorePriorities.get(first.teamName).priority -
+              currentScorePriorities.get(second.teamName).priority,
+        );
+        scorePriorities.current = currentScorePriorities;
 
         if (hasLoaded) {
           const document = iframeRef.current?.contentDocument;
